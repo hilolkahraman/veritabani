@@ -1,0 +1,75 @@
+create database galeri
+use galeri
+create table musteri (
+mNo int identity(1,1) primary key not null, 
+mAdi nvarchar (50),
+mSoyadi nvarchar (50),
+mTelefon int,
+mAdres nvarchar (150),
+);
+create table araclar(
+aracNo int identity (1,1) primary key not null,
+model nvarchar(50),
+marka nvarchar(50),
+yil int,
+plaka nvarchar(50)
+fiyat int
+);
+create table alislar(
+alisNo int identity (1,1) primary key not null,
+mNo int,
+aNo int,
+alis_tarihi datetime,
+alis_fiyatı int
+);
+create table satislar(
+satisNo int identity (1,1) primary key not null,
+mNo int,
+aNo int,
+satis_tarihi datetime,
+satis_fiyatı int
+);
+
+select * from musteri;
+select * from alislar;
+select * from satislar;
+select * from araclar;
+
+insert into musteri
+values ('Hilâl', 'Kahraman', 5965, 'Bursa');
+insert into musteri
+values ('Özlem', 'Tansu', 45665, 'Ankara');
+insert into musteri
+values ('Rümeysa', 'Arslan', 7965, 'Kayseri');
+insert into musteri
+values ('Civelek', 'Civelekoğlu', 5125, 'Arhavi');
+insert into musteri
+values ('Nur', 'Vural', 6791, 'Eskişehir');
+
+--romalı isminin başı i soyadının içinde i geçen musterinin telefon numarası
+select mTelefon from musteri
+where mAdres = 'Roma' and (mAdi like 'i%'or mSoyadi like '%i%')
+
+insert into araclar
+values ('fiesta', 'ford', 2024,'44H89',7000);
+insert into araclar
+values ('passat', 'volkswagen', 2025,'06FK79',5100);
+insert into araclar
+values ('3008', 'peugeot', 2027,'26H08',6548);
+
+--Satış yapılan müşterilerin isimlerini listelemek için gerekli SQL ifadesini yazınız
+
+select musteri.mAdi, musteri.mSoyadi from satislar
+join musteri on satislar.mNo = musteri.mNo
+
+--Hangi müşteriden hangi aracın alındığını listelemek için gerekli SQL ifadesini yazınız
+
+select musteri.mAdi, araclar.marka, araclar.model from alislar
+join musteri on musteri.mNo = alislar .mNo
+join araclar on alislar.aNo = araclar.aracNo
+
+--Hangi müşteriden hangi aracı sattığını listelemek için gerekli SQL ifadesini yazınız
+
+select musteri.mAdi, musteri.mSoyadi, araclar.marka, araclar.model, satislar.satis_fiyatı from satislar
+join musteri on musteri.mNo = satislar.mNo
+join araclar on satislar.aracNo = araclar.aNo
